@@ -1,30 +1,40 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
 <head>
- <meta charset="UTF-8" />
- <title>Amigos</title>
- <link rel="stylesheet" href="/css/styles.css" />
+    <title>Lista de Amigos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
- <h1>Amigos</h1>
- <p><a href="/amigos/novo">Cadastrar novo amigo</a> | <a href="/jogos">Ver jogos</a></p>
- <table>
- <thead><tr><th>ID</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>
- <tbody>
- <% amigos.forEach(a => { %>
- <tr>
- <td><%= a.id %></td>
- <td><%= a.nome %></td>
- <td><%= a.email %></td>
- <td>
- <a href="/amigos/editar/<%= a.id %>">Editar</a>
- <form action="/amigos/excluir/<%= a.id %>" method="POST" style="display:inline;">
- <button type="submit">Excluir</button>
-  </form>
- </td>
- </tr>
- <% }) %>
- </tbody>
- </table>
+<body class="container mt-4">
+    <h1 class="mb-4">Lista de Amigos</h1>
+    
+    <a href="/amigos/novo" class="btn btn-success mb-3">Novo Amigo</a>
+    <a href="/jogos" class="btn btn-secondary mb-3">Ver Jogos</a>
+    <a href="/emprestimos" class="btn btn-secondary mb-3">Ver Empréstimos</a>
+    
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% amigos.forEach(amigo => { %>
+                <tr>
+                    <td><%= amigo.id %></td>
+                    <td><%= amigo.nome %></td>
+                    <td><%= amigo.email %></td>
+                    <td>
+                        <a href="/amigos/editar/<%= amigo.id %>" class="btn btn-warning btn-sm">Editar</a>
+                        <form action="/amigos/excluir/<%= amigo.id %>" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza?')">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
 </body>
 </html>
