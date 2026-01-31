@@ -100,6 +100,25 @@ app.post('/jogos/novo', async (req, res) => {
     await Jogo.create({ titulo, plataforma, amigoId: Number(amigoId) });
     res.redirect('/jogos');
 });
+
+// rota para detalhes do jogo
+app.get('/jogos/visualizar/:id', async (req, res) => {
+    const jogo = await Jogo.findByPk(req.params.id, {
+        include: [
+            { model: Amigo, as: 'dono' },
+            { 
+                model: Emprestimo, 
+                as: 'emprestimos',
+                include: [{ model: Amigo, as: 'amigo' }] // Inclui quem pegou emprestado
+            }
+        ]
+    });
+    
+    if (!jogo) return res.status(404).send('Jogo não encontrado.');
+    
+    res.render('jogos/detalhes', { jogo });
+});
+
 app.get('/jogos/editar/:id', async (req, res) => {
     const jogo = await Jogo.findByPk(req.params.id);
     if (!jogo) return res.status(404).send('Jogo não encontrado.');
@@ -120,21 +139,20 @@ app.post('/jogos/excluir/:id', async (req, res) => {
 
 // EMPRESTIMOS
 app.get('/emprestimos', async (req, res) => {
- const emprestimos = await Emprestimo.findAll({
     const emprestimos = await Emprestimo.findAll({
         include: [{ model: Jogo, as: 'jogo' }, { model: Amigo, as: 'amigo' }],
         order: [['id', 'ASC']]
     });
     res.render('emprestimos/index', { emprestimos });
 });
+
 app.get('/emprestimos/novo', async (req, res) => {
- const jogos = await Jogo.findAll({ order: [['titulo', 'ASC']] });
     const jogos = await Jogo.findAll({ order: [['titulo', 'ASC']] });
     const amigos = await Amigo.findAll({ order: [['nome', 'ASC']] });
     res.render('emprestimos/novo', { jogos, amigos });
 });
+
 app.post('/emprestimos/novo', async (req, res) => {
- const { jogoId, amigoId, dataInicio, dataFim } = req.body;
     const { jogoId, amigoId, dataInicio, dataFim } = req.body;
     await Emprestimo.create({
         jogoId: Number(jogoId),
@@ -146,8 +164,8 @@ app.post('/emprestimos/novo', async (req, res) => {
 });
 
 app.post('/emprestimos/excluir/:id', async (req, res) => {
- await Emprestimo.destroy({ where: { id: req.params.id } });
     await Emprestimo.destroy({ where: { id: req.params.id } });
     res.redirect('/emprestimos');
 });
+
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));

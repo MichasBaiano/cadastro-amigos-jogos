@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detalhes do Jogo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+    <h1>Detalhes do Jogo</h1>
+    <hr>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title"><%= jogo.titulo %></h5>
+            <p class="card-text">
+                <strong>Plataforma:</strong> <%= jogo.plataforma %><br>
+                <strong>Dono:</strong> <%= jogo.dono.nome %> (<%= jogo.dono.email %>)<br>
+                <strong>Cadastrado em:</strong> <%= jogo.createdAt.toLocaleDateString() %>
+            </p>
+        </div>
+    </div>
+
+    <h3>Histórico de Empréstimos</h3>
+    <% if (jogo.emprestimos && jogo.emprestimos.length > 0) { %>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Quem pegou</th>
+                    <th>Data Início</th>
+                    <th>Data Devolução</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% jogo.emprestimos.forEach(emp => { %>
+                    <tr>
+                        <td><%= emp.amigo.nome %></td>
+                        <td><%= emp.dataInicio %></td>
+                        <td><%= emp.dataFim ? emp.dataFim : 'Em aberto' %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <div class="alert alert-info">Este jogo nunca foi emprestado.</div>
+    <% } %>
+
+    <a href="/jogos" class="btn btn-secondary">Voltar</a>
+</body>
+</html>
