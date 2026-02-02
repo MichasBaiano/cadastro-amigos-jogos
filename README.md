@@ -72,9 +72,8 @@ Ao acessar o sistema, será solicitado o login. Utilize as credenciais padrão d
 * `server.js`: Arquivo principal da aplicação.
 
 ## 👥 Autores
-**Ananias Carlos** <br>
-**Davi Carreiro**  <br>
 **Michel Junior**  <br>
+**Davi Carreiro**  <br>
 **Sidney Nascimento**  <br>
 * Curso: Análise e Desenvolvimento de Sistemas (ADS)
 * Instituição: IFPI - Campus Pedro II
